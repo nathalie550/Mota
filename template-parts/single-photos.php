@@ -16,10 +16,10 @@ $small_image = wp_get_attachment_url(get_post_thumbnail_id($post_id));
         <h1>TEAM <br>MARIÉE</h1>
         <?php echo $title; ?>
         <ul>
-            <li><strong>REFERENCE: </strong><?php echo get_post_meta($post_id, 'ref', true); ?> </li>
-            <li><strong>CATEGORIE: </strong><?php echo get_post_meta($post_id, 'categorie', true); ?> </li>
-            <li><strong>FORMAT: </strong><?php echo get_post_meta($post_id, 'format', true); ?> </li>
-            <li><strong>TYPE: </strong><?php echo get_post_meta($post_id, 'TYPE', true); ?> </li>
+            <li><strong>REFERENCE: </strong><?php echo get_post_meta($post_id, 'reference', true); ?> </li>
+            <li><strong>CATEGORIE: </strong><?php echo array_shift(get_the_terms(get_the_ID(), 'categorie'))->name ?></li>
+            <li><strong>FORMAT: </strong><?php echo array_shift(get_the_terms(get_the_ID(), 'format'))->name ?></li>
+            <li><strong>TYPE: </strong><?php echo get_post_meta($post_id, 'type', true); ?> </li>
             <li><strong>ANNEE: </strong><?php echo get_post_meta($post_id, 'annee', true); ?> </li>
         </ul>
         <hr>
@@ -35,7 +35,6 @@ $small_image = wp_get_attachment_url(get_post_thumbnail_id($post_id));
     <div class="infos">
         <p><?php echo "Cette photo vous interesse?";   ?></p>
         <input class="styled myBtn2" type="button" value="Contact" href='#' />
-
 
 
         <div class="mini">
@@ -59,13 +58,12 @@ $small_image = wp_get_attachment_url(get_post_thumbnail_id($post_id));
 
 
 
-
 <?php
 
 $args_photos = array(
-    'post_type' => 'photos',
-    'category_name'  => 'Mariage',
-    'posts_per_page' => 4,
+    'post_type' => 'photo',
+    'category_name'  => '',
+    'posts_per_page' => 10,
     'orderby' => 'rand',
     'order' => 'DESC',
     'paged' => 1,
@@ -83,6 +81,6 @@ endif;
 wp_reset_postdata();
 ?>
 
-<?php get_template_part('template-parts/deux-photos'); ?>
+<?php get_template_part('template-parts/photo-block'); ?>
 
 </section>
