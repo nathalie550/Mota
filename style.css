@@ -276,7 +276,7 @@ hr {
 .contact {
     display: flex;
     /* width: 1148px; */
-    /* margin-left: 60px; */
+    margin-left: 60px;
     height: 90px;
     margin-top: 20px;
     margin-bottom: 30px;
@@ -308,7 +308,7 @@ hr {
 
 /*MINI-PHOTOS*/
 .gallery {
-    margin-left: 450px;
+    margin-left: 400px;
 }
 
 .gallery img {
