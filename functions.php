@@ -3,14 +3,15 @@ function theme_enqueue_styles()
 {
     // Enqueue parent style
     wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
-    wp_enqueue_style('MotaEnfant-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'), filemtime(get_stylesheet_directory() . '/style.css'));
+    wp_enqueue_style('motaenfant-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'), filemtime(get_stylesheet_directory() . '/style.css'));
 }
 
 /*THEME*/
-function MotaEnfant_register_assets()
+function motaenfant_register_assets()
 {
-    wp_enqueue_script('MotaEnfant', get_stylesheet_directory_uri() . '/js/script.js', array('jquery'), true);
-    wp_localize_script('MotaEnfant', 'ajaxurl', admin_url('admin-ajax.php'));
+    wp_register_script('motaenfant', get_stylesheet_directory_uri() . '/js/script.js', array("jquery"), '1.0.0', '');
+    wp_localize_script('motaenfant', 'script_data', array('ajax_url' => admin_url('admin-ajax.php')));
+    wp_enqueue_script('motaenfant');
 }
 
 function register_my_menus()
@@ -40,6 +41,31 @@ function montheme_supports()
 
 /*ACTIONS*/
 add_action('wp_enqueue_scripts', 'theme_enqueue_styles'); // Chargement du thème
-add_action('wp_enqueue_scripts', 'MotaEnfant_register_assets'); // Chargement de mon thème personnalisé
+add_action('wp_enqueue_scripts', 'motaenfant_register_assets'); // Chargement de mon thème personnalisé
 add_action('init', 'register_my_menus'); // Création de mon menu personnalisé
 add_action('wp_enqueue_scripts', 'wpb_add_google_fonts'); //Ajout des polices Google fonts
+
+
+function motaenfant_request_photos()
+{
+    $args_photos = array(
+        'post_type' => 'photos',
+        'category_name'  => 'Mariage',
+        'posts_per_page' => 4,
+        'orderby' => 'rand',
+        'order' => 'DESC',
+        'paged' => 1,
+    );
+    $query = new WP_Query($args_photos);
+    if ($query->have_posts()) {
+        $response = $query;
+    } else {
+        $response = false;
+    }
+
+    wp_send_json($response);
+    wp_die();
+}
+
+add_action('wp_ajax_request_photos', 'motaenfant_request_photos');
+add_action('wp_ajax_nopriv_request_photos', 'motaenfant_request_photos');

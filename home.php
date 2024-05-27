@@ -39,42 +39,6 @@ $terms = get_the_terms($post->ID, 'categorie');
     </div>
 
 
-    <?php
-    $args_photos = array(
-        'post_type' => 'photos',
-        'category_name'  => '',
-        'posts_per_page' => 4,
-        'orderby' => 'rand',
-        'order' => 'DESC',
-        'paged' => 1,
-    );
-
-
-    if (have_posts()) :
-        while (have_posts()) :
-            the_post();
-    ?>
-            <section class="SectionPhotos">
-                <h2>VOUS AIMEREZ AUSSI</h2> <?php echo $title; ?>
-
-                <div class="CardPhotos">
-                    <div class="overlay-image">
-                        <img class="Overlay Image" src="<?php echo $feat_image; ?>" />
-                        <?php echo the_post_thumbnail(); ?>
-
-                        <div class="hover-image">
-                            <i class="fa-regular fa-eye"> </i>
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <?php echo '<p><span id="ref-photo">' . esc_html($reference) . '</span></p>'; ?>
-                            <p class="titre-photo categorie"><?php echo array_shift(get_the_terms(get_the_ID(), 'categorie'))->name ?></p>
-                        </div>
-                    </div>
-                </div>
-
-        <?php
-        endwhile;
-    endif;
-        ?>
+    <?php get_template_part('template-parts/photo-block'); ?>
 </main>
-
 <?php get_footer(); ?>

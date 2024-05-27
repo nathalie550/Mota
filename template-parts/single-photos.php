@@ -36,27 +36,12 @@ $small_image = wp_get_attachment_url(get_post_thumbnail_id($post_id));
         <p><?php echo "Cette photo vous interesse?";   ?></p>
         <input class="styled myBtn2" type="button" value="Contact" href='#' />
 
+        <?php get_template_part('template-parts/mini-photo'); ?>
 
-        <div class="mini">
-            <img src="<?php echo $feat_image; ?>" />
-            <?php $prev_post = get_previous_post();
-            echo ' <a href="' . get_permalink($prev_post) . '"> ' . esc_html($prev_post->$feat_image) . '</a>'; ?>
-
-            <div class="hover-fleches">
-
-                <img class="arrow-left" src="<?php echo get_stylesheet_directory_uri() . '/images/arrow_left.png'; ?>" />
-                <?php $next_post = get_next_post();
-                echo ' <a href="' . get_permalink($next_post) . '"> ' . esc_html($next_post->post_title) . '</a>'; ?>
-                <img class="arrow-right" src="<?php echo get_stylesheet_directory_uri() . '/images/arrow_right.png'; ?>" />
-            </div>
-        </div>
-    </div>
 </section>
 <div class="trait">
     <hr>
 </div>
-
-
 
 <?php
 

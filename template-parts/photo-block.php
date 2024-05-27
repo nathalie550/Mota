@@ -15,51 +15,47 @@
 
 $feat_image = wp_get_attachment_url(get_post_thumbnail_id($post_id));
 $feat_category = wp_get_attachment_url(wp_get_post_categories($category_id));
-$reference = get_field('reference');
+$reference = get_post_meta(get_the_ID(), 'reference', true);
 $terms = get_the_terms($post->ID, 'categorie');
 ?>
 
-
 <section class="SectionPhotos">
-    <h2>VOUS AIMEREZ AUSSI</h2> <?php echo $title; ?>
-
     <?php
-
     $args_photos = array(
-        'post_type' => 'photos',
-        'category_name'  => 'Mariage',
+        'post_type'      => 'photo',
+        'categorie' => '',
         'posts_per_page' => 2,
-        'orderby' => 'rand',
-        'order' => 'DESC',
-        'paged' => 1,
+        'orderby'        => 'rand',
+        'order'          => 'DESC',
+        'paged'          => 1,
     );
-
 
     $args_photos_query = new WP_Query($args_photos);
     if ($args_photos_query->have_posts()) :
+        while ($args_photos_query->have_posts()) : $args_photos_query->the_post();
+            $terms = get_the_terms(get_the_ID(), 'categorie');
+            $term_name = is_array($terms) && !empty($terms) ? esc_html($terms[0]->name) : '';
 
-
-        echo '<div class="CardPhotos">';
-        echo '<div class="overlay-image">';
-        echo '<img class="Overlay"><?php echo wp_get_attachment_image( $feat_image,)'; ?>;
-    echo '<?php the_post_thumbnail(); ?>';
-    echo '<div class="hover-image">';
-        echo '<a href="http://localhost:8888/evenementiel/photos/team-mariee/"></a>';
-        echo '<i class="fa-regular fa-eye"> </i>';
-        echo '<i class="fa-solid fa-magnifying-glass"></i>';
-        echo '<p><span id="ref-photo">' . esc_html($reference) . '</span></p>'; ?>';
-        echo '<p class="titre-photo categorie"><?php echo array_shift(get_the_terms(get_the_ID(), 'categorie'))->name ?></p>';
-        echo '</div>';
-    echo '</div>';
-
-<?php while ($args_photos_query->have_posts()) : $args_photos_query->the_post();
-
+            echo '<div class="CardPhotos">';
+            echo '<div class="overlay-image">';
+            echo get_the_post_thumbnail(null, 'mini', array('class' => 'Overlay'));
+            echo '<div class="hover-regular">';
+            echo '<a href="' . esc_url(get_the_permalink()) . '">';
+            echo '<i class="fa-regular fa-eye"></i>';
+            echo '</div>';
+            echo '<div class="hover-solid">';
+            echo '<i class="fa-light fa-expand"></i>';
+            echo '</div>';
+            echo '<div class="ref-et-categorie">';
+            echo '<p><span id="photo-ref">' . esc_html(get_post_meta(get_the_ID(), 'reference', true)) . '</span></p>';
+            echo '<p class="photo-categorie">' . $term_name . '</p>';
+            echo '</a>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
         endwhile;
+        wp_reset_postdata();
     endif;
 
-    wp_reset_postdata();
-?>
-
-
-
+    ?>
 </section>
